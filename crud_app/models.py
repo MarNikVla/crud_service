@@ -1,10 +1,14 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 class CompanyModel(models.Model):
-    name = models.CharField(max_length=80)
-    sex = models.CharField(max_length=15)
-    age = models.IntegerField()
+    title = models.CharField(max_length=80)
+    active = models.BooleanField(default=True)
+    description = models.TextField(blank=True)
+    foundation_date = models.DateField()
 
+    def __str__(self):
+        return self.title
 
 
 class UserModel(models.Model):
@@ -12,9 +16,10 @@ class UserModel(models.Model):
         ('M', 'Male'),
         ('F', 'Female'),
     )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=80)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    age = models.IntegerField(max_length=3)
+    age = models.IntegerField()
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE, related_name='users')
 
     def __str__(self):
