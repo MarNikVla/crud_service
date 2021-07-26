@@ -1,9 +1,9 @@
 
 from django.contrib import admin
 
-from crud_app.models import UserModel, CompanyModel
+from crud_app.models import Profile, CompanyModel
 
-@admin.register(UserModel)
+@admin.register(Profile)
 class UserModelAdmin(admin.ModelAdmin):
     pass
     # list_display = ['name', 'slug']

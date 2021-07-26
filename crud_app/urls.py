@@ -4,7 +4,7 @@ from crud_app import views
 from crud_app.views import IndexView
 from django.contrib.auth import views as auth_views
 
-app_name = 'shop'
+app_name = 'crud_app'
 
 urlpatterns = [
     path('', IndexView.as_view(), name='home'),

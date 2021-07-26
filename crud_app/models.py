@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+
 
 class CompanyModel(models.Model):
     title = models.CharField(max_length=80)
@@ -11,7 +13,7 @@ class CompanyModel(models.Model):
         return self.title
 
 
-class UserModel(models.Model):
+class Profile(models.Model):
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
@@ -24,3 +26,6 @@ class UserModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('user_detail', kwargs={'pk': self.pk})
