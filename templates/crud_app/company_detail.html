@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {{ ticket.category }}
+{% endblock %}
+{% block header %}
+    <div class="container">
+        <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+            <div class="col-md-12 px-0" id="collapseCommon">
+                <p class="float-right">
+                    <a href="{% url 'index' %}">На стартовую</a>
+                </p>
+                <h1 class="display-5 font-italic">Выбраная категория {{ ticket.category.name|slice:"-3:" }}</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div>
+        <h3 class="pb-4 mb-4 font-italic border-bottom">
+        </h3>
+        <div>
+            <h1>{{ ticket.title }}</h1>
+            <form action="result" method="get">
+                {% for question in ticket.questions.all|dictsort:"id" %}
+                    <hr>
+                    <h3>{{ question.title }}</h3>
+                    <img src='{{ question.image.url }}' class="rounded mx-auto d-block" alt="">
+                    <h6>{{ question.text }}</h6>
+                    <div class="custom-control custom-radio" id={{ question.id }}>
+                        {% for answer in question.answers_as_list %}
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" id="{{ answer }}"
+                                       name={{ question.id }} value="{{ answer }}">
+                                <label class="custom-control-label" for="{{ answer }}">{{ answer }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="mt-4">
+                    <button class="btn btn-primary" type="submit" id="submit" disabled>Сдать тест</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{#    <script src="{% static "tests_app/js/test_list.js" %}"></script>#}
+{% endblock %}

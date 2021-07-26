@@ -1,36 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="utf-8"/>
-    <title>{% block title %}Test_CRUD{% endblock %}</title>
-{#    <link href="{% static "css/base.css" %}" rel="stylesheet">#}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %} Test site {% endblock %}</title>
 </head>
 <body>
-<div id="header">
-    <a href="/" class="logo">Test_CRUD</a>
-</div>
-<div id="subheader">
-    <div class="cart">
-        {% with total_items=cart|length %}
-            {% if cart|length > 0 %}
-                Your cart:
-                <a href="{% url "cart:cart_detail" %}">
-                    {{ total_items }} item{{ total_items|pluralize }},
-                    ${{ cart.get_total_price }}
-                </a>
-            {% else %}
-                Your cart is empty.
-            {% endif %}
-        {% endwith %}
-    </div>
-</div>
-<div id="content">
-    {% block content %}
-        {% for each in company %}
-            <h5>{{ each.title }}</h5>
-        {% endfor %}
-    {% endblock %}
-</div>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<hr>
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'update_profile' %}">{{ request.user.username }} - Отредактируйте Ваш профиль</a>
+    {% endif %}
+    <a href="{% url 'index' %}">Домашняя страница</a>
+    <a href="{% url 'users_list' %}">Список зарегистрированных пользователей</a>
 </body>
 </html>
