@@ -9,6 +9,8 @@ verify_ssl = true
 django = "*"
 python-dotenv = "*"
 django-debug-toolbar = "*"
+pillow = "*"
+social-auth-app-django = "*"
 
 [requires]
 python_version = "3.9"

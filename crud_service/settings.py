@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crud_app.apps.CrudAppConfig',
+    'social_django',
+    'accounts.apps.AccountsConfig',
     'debug_toolbar',
 ]
 
@@ -60,8 +61,7 @@ ROOT_URLCONF = 'crud_service.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,3 +135,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
+# Redirect to update profile
+LOGIN_REDIRECT_URL = 'update_profile'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+# GitHub AUTH
+SOCIAL_AUTH_GITHUB_KEY = '927cc51f63b6db4f55d7'
+SOCIAL_AUTH_GITHUB_SECRET = 'c4c616c304eaa17bad4183bf8408fa946b7292f4'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)

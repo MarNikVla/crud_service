@@ -1,13 +1,10 @@
 from django.urls import path
-
-from crud_app import views
-from crud_app.views import IndexView
+from accounts import views
 from django.contrib.auth import views as auth_views
 
-app_name = 'crud_app'
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='home'),
+    path('home/', views.HomePageView.as_view(), name='home'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', views.RegisterUserFormView.as_view(), name='registration'),
