@@ -7,7 +7,7 @@ class Company(models.Model):
     title = models.CharField('Название', max_length=50)
     description = models.TextField('Информация о компании', max_length=500, blank=True)
     foundation_date = models.DateField('Дата основания: dd/mm/YYYY', null=True, blank=True)
-    avatar = models.ImageField('Аватар', upload_to='company/%Y/%m/%d/', blank=True)
+    avatar = models.ImageField('Аватар', upload_to='company /%Y/%m/%d/', blank=True)
 
     def __str__(self):
         return '{}'.format(self.title)
@@ -15,10 +15,10 @@ class Company(models.Model):
     def get_absolute_url(self):
         return reverse('company_detail', kwargs={'pk': self.pk})
 
+    # Компания заглушка 'No company'
     @classmethod
-    def create(cls, title='No company'):
-        company = cls(title=title).save()
-        # do something with the book
+    def create_stub_company(cls, title='No company'):
+        company = cls(title=title)
         return company
 
     class Meta:

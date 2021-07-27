@@ -21,36 +21,25 @@ class Profile(models.Model):
                                 on_delete=models.CASCADE,
                                 blank=True)
 
-
-    # def save(self, *args, **kwargs):
-    #     if self.company is None:  # Set default reference
-    #         self.company_id = 1
-    #     super(Profile, self).save(*args, **kwargs)
-
     def __str__(self):
         return '{}'.format(self.user.username)
 
     def get_absolute_url(self):
         return reverse('user_detail', kwargs={'pk': self.pk})
 
-
 @receiver(post_save, sender=User)
-def create_company(sender, instance, created, **kwargs):
-    """Creating profile if create user"""
+def save_or_create_profile(sender, instance, created, **kwargs):
+    """Creating stub company"""
     if created:
-        # Company.create()
-        print('sdf')
-        # comp = Company.objects.get(pk=1)
-        # print(comp)
+        try:
+            Company.objects.get(title__exact='No company')
+        except ObjectDoesNotExist:
+            Company.create_stub_company().save()
 
-
-# @receiver(post_save, sender=User)
-# def save_or_create_profile(sender, instance, created, **kwargs):
-#     """Creating profile if create user"""
-#     if created:
-#         Profile.objects.create(user=instance, company_id=1)
-#     else:
-#         try:
-#             instance.profile.save()
-#         except ObjectDoesNotExist:
-#             Profile.objects.create(user=instance)
+        """Creating profile if create user"""
+        Profile.objects.create(user=instance, company=Company.objects.get(title__exact='No company'))
+    else:
+        try:
+            instance.profile.save()
+        except ObjectDoesNotExist:
+            Profile.objects.create(user=instance)
