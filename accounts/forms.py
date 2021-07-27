@@ -1,5 +1,7 @@
 from django import forms
-from crud_app.models import Profile
+
+from accounts.models import Profile
+
 
 class ProfileEditForm(forms.ModelForm):
     """Profile edit form"""
