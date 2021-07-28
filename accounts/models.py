@@ -1,11 +1,14 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 
 from companies.models import Company
+
+def get_stab_company_id():
+    return Company.objects.get(title__exact='No company').id
 
 class Profile(models.Model):
     """Profile model"""
@@ -18,8 +21,7 @@ class Profile(models.Model):
     avatar = models.ImageField('Аватар', upload_to='users/%Y/%m/%d/', blank=True)
     company = models.ForeignKey(Company,
                                 related_name='employee',
-                                on_delete=models.CASCADE,
-                                blank=True)
+                                on_delete=models.SET(get_stab_company_id))
 
     def __str__(self):
         return '{}'.format(self.user.username)
@@ -36,10 +38,16 @@ def save_or_create_profile(sender, instance, created, **kwargs):
         except ObjectDoesNotExist:
             Company.create_stub_company().save()
 
-        """Creating profile if create user"""
+        # Creating Profile if create User
         Profile.objects.create(user=instance, company=Company.objects.get(title__exact='No company'))
     else:
         try:
             instance.profile.save()
         except ObjectDoesNotExist:
             Profile.objects.create(user=instance)
+
+# Delete User if delete Profile
+@receiver(post_delete, sender=Profile)
+def del_user(sender, instance, **kwargs):
+    User.objects.get(id__exact=instance.user.id).delete()
+
