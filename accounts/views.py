@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
@@ -13,6 +14,18 @@ class HomePageView(TemplateView):
     """Home page"""
     template_name = 'home.html'
 
+class LoginUserView(LoginView):
+    # template_name = 'registration/login.html'
+    def get_success_url(self):
+        return reverse_lazy('accounts:update_profile')
+    # success_url = reverse_lazy('accounts:update_profile')
+
+
+class LogoutUserView(LogoutView):
+    # template_name = 'registration/login.html'
+    def get_success_url(self):
+        return reverse_lazy('accounts:login')
+
 
 class ProfileUpdateDoneView(TemplateView):
     template_name = 'accounts/update_done.html'
@@ -22,7 +35,7 @@ class RegisterUserFormView(FormView):
     """Standard registration view"""
     form_class = UserCreationForm
     template_name = "registration/register.html"
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('accounts:login')
 
     def form_valid(self, form):
         form.save()
@@ -33,7 +46,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     """Update Profile view"""
     form_class = ProfileEditForm
     template_name = 'accounts/update.html'
-    success_url = reverse_lazy('update_done')
+    success_url = reverse_lazy('accounts:update_done')
 
     def get_object(self):
         """Get object to update from request"""

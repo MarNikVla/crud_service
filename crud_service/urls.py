@@ -12,9 +12,10 @@ urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path('companies/', include('companies.urls')),
     path('oauth/', include('social_django.urls', namespace='social')),
-    path('users/', views.ProfileListView.as_view(), name='users_list'),
-    path('user/<int:pk>', views.ProfileDetailView.as_view(), name='user_detail'),
+    # path('users/', views.ProfileListView.as_view(), name='users_list'),
+    # path('user/<int:pk>', views.ProfileDetailView.as_view(), name='user_detail'),
 ]
 
 if settings.DEBUG:

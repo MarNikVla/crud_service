@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2><a href="{% url 'companies:company_list' %}">Companies</a></h2>
+
+    <ul>
+        {% for company in companies %}
+            {% if company.title != 'No company' %}
+                <li>{{ company.title }} - {{ company.id }}
+                    <a href="{% url 'companies:company_edit' company.id %}">edit</a>
+                    <a href="{% url 'companies:company_delete' company.id %}">delete</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'companies:company_new' %}">New</a>
+
+{% endblock %}

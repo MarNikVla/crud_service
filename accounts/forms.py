@@ -5,6 +5,7 @@ from accounts.models import Profile
 
 class ProfileEditForm(forms.ModelForm):
     """Profile edit form"""
+
     class Meta:
         model = Profile
-        exclude = ['user']
+        exclude = ['user','company']

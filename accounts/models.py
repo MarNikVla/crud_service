@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 from companies.models import Company
 
@@ -27,7 +27,7 @@ class Profile(models.Model):
         return '{}'.format(self.user.username)
 
     def get_absolute_url(self):
-        return reverse('user_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('accounts:user_detail', kwargs={'pk': self.pk})
 
 @receiver(post_save, sender=User)
 def save_or_create_profile(sender, instance, created, **kwargs):
