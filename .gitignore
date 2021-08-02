@@ -221,5 +221,4 @@ fabric.properties
 *.iml
 out
 gen
-!/db.sqlite3
-accounts/migrations/0006_alter_profile_id.py
+
