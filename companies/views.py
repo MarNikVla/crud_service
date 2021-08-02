@@ -8,16 +8,20 @@ from .models import Company
 
 
 class EditCompanyPermissionsMixin(AccessMixin):
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and self.user_has_permissions(request):
-            return super(EditCompanyPermissionsMixin, self).dispatch(
-                request, *args, **kwargs)
-
-        return HttpResponseForbidden("You do not have permission to Edit or Delete Company Profile")
-
-    def user_has_permissions(self, request):
-        return self.request.user.profile.company.pk == self.kwargs['pk']
+    pass
+    #
+    # def dispatch(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated and self.user_has_permissions(request):
+    #         return super(EditCompanyPermissionsMixin, self).dispatch(
+    #             request, *args, **kwargs)
+    #
+    #     return HttpResponseForbidden("You do not have permission to Edit or Delete Company Profile")
+    #
+    # def user_has_permissions(self, request):
+    #     print(self.__dir__())
+    #     print(self.fields)
+    #     # print(self.get_deferred_fields(self))
+    #     return self.request.user.profile.company.pk == self.kwargs['pk']
 
 
 class CompanyList(ListView):
@@ -35,6 +39,17 @@ class CompanyUpdate(EditCompanyPermissionsMixin, UpdateView):
     model = Company
     fields = ['title', 'description']
     success_url = reverse_lazy('companies:company_list')
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # if self.request.user ==
+        return Company.objects.filter(staff=self.request.user)
+
+
+        # if request.user.is_superuser:
+        #     return qs
+        # return qs.filter(author=request.user)
+
 
 
 class CompanyDelete(EditCompanyPermissionsMixin,DeleteView):
