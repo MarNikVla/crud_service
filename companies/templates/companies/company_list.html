@@ -6,15 +6,16 @@
 
     <ul>
         {% for company in companies %}
-            {% if company.title != 'No company' %}
-                <li>{{ company.title }} - {{ company.id }}
-                    <a href="{% url 'companies:company_edit' company.id %}">edit</a>
+            <li><a href="{{ company.get_absolute_url }}">{{ company.title }}</a>
+                <a href="{% url 'companies:company_edit' company.id %}">edit</a>
+                {% if request.user.profile.is_admin %}
                     <a href="{% url 'companies:company_delete' company.id %}">delete</a>
-                </li>
-            {% endif %}
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
-
-    <a href="{% url 'companies:company_new' %}">New</a>
+    {% if request.user.profile.is_admin %}
+        <a href="{% url 'companies:company_new' %}">New</a>
+    {% endif %}
 
 {% endblock %}

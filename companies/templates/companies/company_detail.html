@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Company - {{ company.title}}{% endblock %}
+{% block content %}
+    <h1>Company - {{ company.title}}</h1>
+    <div>
+        <ul>
+            <li><p>Название компании: {{ company.title}}</p></li>
+            <li><p>Описание: {{ company.description }}</p></li>
+            <li><p>Новости: {{ company.news }}</p></li>
+            <li><p>Дата основания: {{ company.foundation_date }}</p></li>
+            <li><p>Аватар: </p>
+                <p><img src="{{ MEDIA_URL }}{{ company.avatar }}" alt="{{ company.avatar }}"></p>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

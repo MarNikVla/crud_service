@@ -15,16 +15,15 @@ class HomePageView(TemplateView):
     template_name = 'home.html'
 
 class LoginUserView(LoginView):
-    # template_name = 'registration/login.html'
+    template_name = 'registration/login.html'
     def get_success_url(self):
         return reverse_lazy('accounts:update_profile')
     # success_url = reverse_lazy('accounts:update_profile')
 
 
 class LogoutUserView(LogoutView):
-    # template_name = 'registration/login.html'
-    def get_success_url(self):
-        return reverse_lazy('accounts:login')
+
+    next_page = reverse_lazy('home')
 
 
 class ProfileUpdateDoneView(TemplateView):

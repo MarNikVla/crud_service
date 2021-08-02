@@ -22,6 +22,8 @@ class Profile(models.Model):
     company = models.ForeignKey(Company,
                                 related_name='employee',
                                 on_delete=models.SET(get_stab_company_id))
+    is_admin = models.BooleanField('Администратор', default=False)
+    is_moderator = models.BooleanField('Модератор', default=False)
 
     def __str__(self):
         return '{}'.format(self.user.username)

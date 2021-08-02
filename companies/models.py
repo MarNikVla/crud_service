@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 
 class Company(models.Model):
@@ -10,16 +10,13 @@ class Company(models.Model):
     news = models.TextField('Новости компании', blank=True)
     foundation_date = models.DateField('Дата основания: dd/mm/YYYY', null=True, blank=True)
     avatar = models.ImageField('Аватар', upload_to='company /%Y/%m/%d/', blank=True)
-    staff = models.ManyToManyField(User,
-                                   related_name='company_staff',
-                                   blank=True)
 
 
     def __str__(self):
         return '{}'.format(self.title)
 
     def get_absolute_url(self):
-        return reverse('company_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('companies:company_detail', kwargs={'pk': self.pk})
 
     # Компания заглушка 'No company'
     @classmethod

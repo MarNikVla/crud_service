@@ -8,4 +8,4 @@ class ProfileEditForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ['user','company']
+        exclude = ['user','is_admin', 'is_moderator']
