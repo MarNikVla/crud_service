@@ -5,7 +5,9 @@
     <div>
         {% for profile in profiles %}
             <ul>
-                <li><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a></li>
+                <li><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a>
+                    <a href="{{ profile.get_edit_url }}">edit</a>
+                </li>
 
             </ul>
         {% endfor %}

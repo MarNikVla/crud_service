@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 
 
 class Company(models.Model):
@@ -8,7 +8,7 @@ class Company(models.Model):
     title = models.CharField('Название', max_length=50)
     description = models.TextField('Информация о компании', max_length=500, blank=True)
     news = models.TextField('Новости компании', blank=True)
-    foundation_date = models.DateField('Дата основания: dd/mm/YYYY', null=True, blank=True)
+    foundation_date = models.DateField('Дата основания: YYYY-mm-dd', null=True, blank=True)
     avatar = models.ImageField('Аватар', upload_to='company /%Y/%m/%d/', blank=True)
 
 

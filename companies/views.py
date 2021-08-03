@@ -9,20 +9,26 @@ from .models import Company
 
 
 class EditCompanyPermissionsMixin(AccessMixin):
-    pass
-    #
-    # def dispatch(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated and self.user_has_permissions(request):
-    #         return super(EditCompanyPermissionsMixin, self).dispatch(
-    #             request, *args, **kwargs)
-    #
-    #     return HttpResponseForbidden("You do not have permission to Edit or Delete Company Profile")
-    #
-    # def user_has_permissions(self, request):
-    #     print(self.__dir__())
-    #     print(self.fields)
-    #     # print(self.get_deferred_fields(self))
-    #     return self.request.user.profile.company.pk == self.kwargs['pk']
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and self.user_has_permissions(request):
+            return super(EditCompanyPermissionsMixin, self).dispatch(
+                request, *args, **kwargs)
+
+        return HttpResponseForbidden("You do not have permission to Edit Company Profile")
+
+    def user_has_permissions(self, request):
+        return self.request.user.profile.company.pk == self.kwargs['pk']
+
+
+class DeleteCompanyPermissionsMixin(AccessMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.profile.is_admin:
+            return super(DeleteCompanyPermissionsMixin, self).dispatch(
+                request, *args, **kwargs)
+
+        return HttpResponseForbidden("You do not have permission to Delete Company Profile")
 
 
 class CompanyList(ListView):
@@ -31,7 +37,6 @@ class CompanyList(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        # if self.request.user ==
         return qs.exclude(title__iexact='No company')
 
 
@@ -41,10 +46,10 @@ class CompanyCreate(CreateView):
     success_url = reverse_lazy('companies:company_list')
 
 
-class CompanyUpdate(EditCompanyPermissionsMixin, UpdateView):
+class CompanyUpdateView(EditCompanyPermissionsMixin, UpdateView):
     model = Company
 
-    fields = ['title', 'description']
+    # fields = ['title', 'description']
     success_url = reverse_lazy('companies:company_list')
 
     def get_form_class(self):
@@ -60,14 +65,12 @@ class CompanyUpdate(EditCompanyPermissionsMixin, UpdateView):
     #     # if self.request.user ==
     #     return Company.objects.filter(staff=self.request.user)
 
-
-        # if request.user.is_superuser:
-        #     return qs
-        # return qs.filter(author=request.user)
-
+    # if request.user.is_superuser:
+    #     return qs
+    # return qs.filter(author=request.user)
 
 
-class CompanyDelete(EditCompanyPermissionsMixin,DeleteView):
+class CompanyDelete(DeleteCompanyPermissionsMixin, DeleteView):
     model = Company
     success_url = reverse_lazy('companies:company_list')
 

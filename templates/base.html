@@ -12,7 +12,7 @@
 </main>
 <hr>
     {% if request.user.is_authenticated %}
-        <a href="{% url 'accounts:update_profile' %}">{{ request.user.username }} - Отредактируйте Ваш профиль</a><br>
+        <a href="{% url 'accounts:update_profile' request.user.profile.pk %}">{{ request.user.username }} - Отредактируйте Ваш профиль</a><br>
         <a href="{% url 'accounts:logout' %}"> Logout</a><br>
         {% else %}
          <a href="{% url 'accounts:login' %}"> Login</a><br>

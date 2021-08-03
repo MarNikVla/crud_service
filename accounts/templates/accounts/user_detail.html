@@ -11,6 +11,7 @@
             <li><p>Информация о пользователе: {{ profile.bio }}</p></li>
             <li><p>Дата рождения: {{ profile.birth_date }}</p></li>
             <li><p>Компания: {{ profile.company}}</p></li>
+            <li><p>Модератор: {{ profile.is_moderator}}</p></li>
             <li><p>avatar: </p>
                 <p><img src="{{ MEDIA_URL }}{{ profile.avatar }}" alt="{{ profile.avatar }}"></p>
             </li>
