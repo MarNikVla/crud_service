@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
@@ -7,7 +7,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView, UpdateView
 from django.contrib.auth.forms import UserCreationForm
 
-from accounts.forms import ProfileEditForm
+from accounts.forms import UserProfileEditForm, AdminProfileEditForm
 from accounts.models import Profile
 
 
@@ -20,7 +20,7 @@ class LoginUserView(LoginView):
     template_name = 'registration/login.html'
 
     def get_success_url(self):
-        return reverse_lazy('accounts:update_profile')
+        return reverse_lazy('accounts:update_profile', kwargs={'pk': self.request.user.profile.pk})
     # success_url = reverse_lazy('accounts:update_profile')
 
 
@@ -30,6 +30,12 @@ class LogoutUserView(LogoutView):
 
 class ProfileUpdateDoneView(TemplateView):
     template_name = 'accounts/update_done.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        updated_pk = self.kwargs['pk']
+        context['updated_profile'] = Profile.objects.get(pk=updated_pk)
+        return context
 
 
 class RegisterUserFormView(FormView):
@@ -53,16 +59,26 @@ class EditProfilePermissionsMixin(AccessMixin):
         return HttpResponseForbidden("You do not have permission to Edit User Profile")
 
     def user_has_permissions(self, request):
-        return self.request.user.profile.pk == self.kwargs['pk']
+        is_admin = self.request.user.profile.is_admin
+        is_moderator = self.request.user.profile.is_moderator
+        is_profile_owner = self.request.user.profile.pk == self.kwargs['pk']
+        return is_admin or is_profile_owner or is_moderator
 
 
 class ProfileUpdateView(EditProfilePermissionsMixin, UpdateView):
     """Update Profile view"""
     model = Profile
-    form_class = ProfileEditForm
     template_name = 'accounts/update_profile.html'
-    success_url = reverse_lazy('accounts:update_done')
 
+    def get_success_url(self):
+        return reverse_lazy('accounts:update_done', kwargs={'pk': self.kwargs['pk']})
+
+    def get_form_class(self):
+        if self.request.user.profile.is_admin:
+            form_class = AdminProfileEditForm
+        else:
+            form_class = UserProfileEditForm
+        return form_class
     # def get_object(self):
     #     """Get object to update from request"""
     #     return self.request.user.profile

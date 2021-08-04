@@ -2,9 +2,9 @@
 {% block title %}Профиль{% endblock %}
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h3>Здравствуйте {{ request.user.username }}</h3>
+        <h3>Здравствуйте {{ user.username }}</h3>
     {% endif %}
-    <h1>Заполните Ваш профиль</h1>
+    <h1>Заполните/измените профиль {{ profile.user.username }}</h1>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
