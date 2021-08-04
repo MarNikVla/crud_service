@@ -3,7 +3,7 @@ from django import forms
 from companies.models import Company
 
 
-class StaffEditForm(forms.ModelForm):
+class ModeratorEditForm(forms.ModelForm):
     """Staff edit form"""
 
     class Meta:
@@ -17,3 +17,11 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = Company
         fields = ['news']
+
+
+class AdminEditForm(forms.ModelForm):
+    """Staff edit form"""
+
+    class Meta:
+        model = Company
+        fields = '__all__'

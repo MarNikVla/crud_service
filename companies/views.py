@@ -4,14 +4,14 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from .forms import StaffEditForm, UserEditForm
+from .forms import ModeratorEditForm, UserEditForm, AdminEditForm
 from .models import Company
 
 
 class EditCompanyPermissionsMixin(AccessMixin):
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and self.user_has_permissions(request):
+        if request.user.profile.is_admin or self.user_has_permissions(request):
             return super(EditCompanyPermissionsMixin, self).dispatch(
                 request, *args, **kwargs)
 
@@ -53,8 +53,10 @@ class CompanyUpdateView(EditCompanyPermissionsMixin, UpdateView):
     success_url = reverse_lazy('companies:company_list')
 
     def get_form_class(self):
-        if self.request.user.profile.is_moderator:
-            form_class = StaffEditForm
+        if self.request.user.profile.is_admin:
+            form_class = AdminEditForm
+        elif self.request.user.profile.is_moderator:
+            form_class = ModeratorEditForm
         else:
             form_class = UserEditForm
         return form_class
