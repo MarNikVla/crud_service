@@ -11,13 +11,13 @@
     {% block content %}{% endblock %}
 </main>
 <hr>
+    <a href="{% url 'home' %}">Домашняя страница</a><br>
     {% if request.user.is_authenticated %}
         <a href="{% url 'accounts:update_profile' request.user.profile.pk %}">{{ request.user.username }} - Отредактируйте Ваш профиль</a><br>
         <a href="{% url 'accounts:logout' %}"> Logout</a><br>
         {% else %}
          <a href="{% url 'accounts:login' %}"> Login</a><br>
     {% endif %}
-    <a href="{% url 'home' %}">Домашняя страница</a><br>
     <a href="{% url 'accounts:users_list' %}">Список зарегистрированных пользователей</a><br>
     <a href="{% url 'companies:company_list' %}">Список компаний</a><br>
 </body>

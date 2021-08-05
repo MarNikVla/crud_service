@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<h2><a href="{% url 'companies:company_list' %}">Books CBV</a>: Edit</h2>
-
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-</form>
+    {% if company %}
+        <h2>Компания <a
+                href="{% url 'companies:company_detail' company.pk %}">{{ company.title }}</a>:
+        </h2>
+    {% else %} <h2>Создайте компанию</h2>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit"/>
+    </form>
 
 {% endblock %}

@@ -21,7 +21,6 @@ class LoginUserView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('accounts:update_profile', kwargs={'pk': self.request.user.profile.pk})
-    # success_url = reverse_lazy('accounts:update_profile')
 
 
 class LogoutUserView(LogoutView):
@@ -75,13 +74,9 @@ class ProfileUpdateView(EditProfilePermissionsMixin, UpdateView):
 
     def get_form_class(self):
         if self.request.user.profile.is_admin:
-            form_class = AdminProfileEditForm
-        else:
-            form_class = UserProfileEditForm
-        return form_class
-    # def get_object(self):
-    #     """Get object to update from request"""
-    #     return self.request.user.profile
+            return AdminProfileEditForm
+
+        return UserProfileEditForm
 
 
 class ProfileListView(ListView):
@@ -89,6 +84,11 @@ class ProfileListView(ListView):
     model = Profile
     template_name = 'accounts/users_list.html'
     context_object_name = 'profiles'
+
+    # Исключаем суперюзера из списка пользователей
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.exclude(user__is_superuser=True)
 
 
 class ProfileDetailView(DetailView):

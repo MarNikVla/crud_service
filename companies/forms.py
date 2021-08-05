@@ -4,11 +4,11 @@ from companies.models import Company
 
 
 class ModeratorEditForm(forms.ModelForm):
-    """Staff edit form"""
+    """Moderator edit form"""
 
     class Meta:
         model = Company
-        fields = ['description', 'news']
+        fields = ['description', 'news', 'foundation_date', 'avatar']
 
 
 class UserEditForm(forms.ModelForm):
@@ -20,7 +20,7 @@ class UserEditForm(forms.ModelForm):
 
 
 class AdminEditForm(forms.ModelForm):
-    """Staff edit form"""
+    """Admin edit form"""
 
     class Meta:
         model = Company

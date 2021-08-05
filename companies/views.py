@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import AccessMixin
-from django.http import HttpResponse, Http404, HttpResponseNotAllowed, HttpResponseForbidden
-from django.views.generic import TemplateView, ListView, DetailView
+from django.http import HttpResponseForbidden
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -48,33 +48,26 @@ class CompanyCreate(CreateView):
 
 class CompanyUpdateView(EditCompanyPermissionsMixin, UpdateView):
     model = Company
-
-    # fields = ['title', 'description']
     success_url = reverse_lazy('companies:company_list')
 
     def get_form_class(self):
         if self.request.user.profile.is_admin:
-            form_class = AdminEditForm
-        elif self.request.user.profile.is_moderator:
-            form_class = ModeratorEditForm
-        else:
-            form_class = UserEditForm
-        return form_class
-        # fc= super().get_form_class()
+            return AdminEditForm
 
-    # def get_queryset(self):
-    #     qs = super().get_queryset()
-    #     # if self.request.user ==
-    #     return Company.objects.filter(staff=self.request.user)
+        if self.request.user.profile.is_moderator:
+            return ModeratorEditForm
 
-    # if request.user.is_superuser:
-    #     return qs
-    # return qs.filter(author=request.user)
+        return UserEditForm
 
 
 class CompanyDelete(DeleteCompanyPermissionsMixin, DeleteView):
     model = Company
     success_url = reverse_lazy('companies:company_list')
+
+    # Переопределим get_queryset чтобы случайно не удалить компанию заглушку
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.exclude(title__iexact='No company')
 
 
 class CompanyDetailView(DetailView):

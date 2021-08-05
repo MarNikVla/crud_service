@@ -2,38 +2,44 @@
 
 Ссылка на вакансию: https://hh.ru/vacancy/45850841
 
-## Результаты
-
-## Проблемы
-
 ## Подготовка рабочего окружения
 
-```bash
-$ npm install
-```
+Install dependencies
+```cmd
+pip install -r requirements.txt
+``` 
+or
+```cmd
+pipenv install
+``` 
 
-Для работы приложения необходимо инициализировать базу данных. 
+## Запуск 
 
-```bash
-$ createdb moy-klass-db
-```
+```cmd
+python manage.py runserver
+``` 
 
-И загрузить в неё дамб:
+### Описание проекта
 
-```bash
-$ psql moy-klass-db < test.sql
-```
+В директории проекта уже создана база данных которая содержит:
+- Cуперпользователя (login:admin, password admin)
 
-## Запуск и тестирование
+Пользователей: 
+- administrator (login:administrator, pass:administrator),
+- moderator (login:moderator, pass:moderator),
+- user (login:user, pass:user).
 
-```bash
-DATABASE_URL=postgres://localhost:<port>/moy-klass-db npm start
-```
+Компании:
+- Moderator's company (moderator - модератор компании)
+- User's company (user - пользователь компании)
+- Just company (компания без пользователей)
+- No company (Компания заглушка, по умолчанию назначается новым пользователям)
 
-### Тестирование
+### Описание прав пользователей
 
-
-
-```bash
-DATABASE_URL=postgres://localhost:<port>/moy-klass-db npm test
-```
+- Суперпользователь - назначает администраторов 
+и модераторов проекта (через стандартный интерфейс администратора)
+- Администратор - создает/удаляет/редактирует компании, назначает модераторов компаний.
+- Модератор - редактирует новости, описание, дату основания, аватар своей компании.
+- Пользователь компании - редактирует только новости своей компании.
+- Не авторизованный пользователь - только просматривает портфолио компаний.

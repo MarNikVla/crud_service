@@ -7,10 +7,9 @@
             <ul>
                 <li><a href="{{ profile.get_absolute_url }}">{{ profile.user.username }}</a>
                     {% if request.user.profile.is_admin or request.user.profile.is_moderator %}
-                         <a href="{{ profile.get_edit_url }}">edit profile</a>
+                        <a href="{{ profile.get_edit_url }}">edit</a>
                     {% endif %}
                 </li>
-
             </ul>
         {% endfor %}
     </div>

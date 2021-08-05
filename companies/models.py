@@ -9,7 +9,7 @@ class Company(models.Model):
     description = models.TextField('Информация о компании', max_length=500, blank=True)
     news = models.TextField('Новости компании', blank=True)
     foundation_date = models.DateField('Дата основания: YYYY-mm-dd', null=True, blank=True)
-    avatar = models.ImageField('Аватар', upload_to='company /%Y/%m/%d/', blank=True)
+    avatar = models.ImageField('Аватар', upload_to='company/%Y/%m/%d/', blank=True)
 
 
     def __str__(self):
