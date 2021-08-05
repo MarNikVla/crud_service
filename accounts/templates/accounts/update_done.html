@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}Изменения сохранены{% endblock %}
 {% block content %}
     <h2>Профиль <a href="{% url 'accounts:user_detail' updated_profile.pk %}">{{ updated_profile }}</a> успешно сохранен</h2>

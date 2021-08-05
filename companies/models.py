@@ -11,7 +11,6 @@ class Company(models.Model):
     foundation_date = models.DateField('Дата основания: YYYY-mm-dd', null=True, blank=True)
     avatar = models.ImageField('Аватар', upload_to='company/%Y/%m/%d/', blank=True)
 
-
     def __str__(self):
         return '{}'.format(self.title)
 
@@ -25,5 +24,5 @@ class Company(models.Model):
         return company
 
     class Meta:
-         verbose_name = "Company"
-         verbose_name_plural = "Companies"
+        verbose_name = "Company"
+        verbose_name_plural = "Companies"
