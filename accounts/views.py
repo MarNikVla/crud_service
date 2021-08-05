@@ -57,11 +57,11 @@ class EditProfilePermissionsMixin(AccessMixin):
 
         return HttpResponseForbidden("You do not have permission to Edit User Profile")
 
+    # Только сам пользователь и администратор могут изменять профиль пользователя
     def user_has_permissions(self, request):
         is_admin = self.request.user.profile.is_admin
-        is_moderator = self.request.user.profile.is_moderator
         is_profile_owner = self.request.user.profile.pk == self.kwargs['pk']
-        return is_admin or is_profile_owner or is_moderator
+        return is_admin or is_profile_owner
 
 
 class ProfileUpdateView(EditProfilePermissionsMixin, UpdateView):
@@ -72,10 +72,11 @@ class ProfileUpdateView(EditProfilePermissionsMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('accounts:update_done', kwargs={'pk': self.kwargs['pk']})
 
+    # Разнные формы изменения профиля пользователя
+    # для разных ролей пользователей
     def get_form_class(self):
         if self.request.user.profile.is_admin:
             return AdminProfileEditForm
-
         return UserProfileEditForm
 
 
@@ -85,7 +86,7 @@ class ProfileListView(ListView):
     template_name = 'accounts/users_list.html'
     context_object_name = 'profiles'
 
-    # Исключаем суперюзера из списка пользователей
+    # Исключаем суперюзера из отображения списка пользователей
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.exclude(user__is_superuser=True)
