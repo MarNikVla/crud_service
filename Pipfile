@@ -11,6 +11,7 @@ python-dotenv = "*"
 django-debug-toolbar = "*"
 pillow = "*"
 social-auth-app-django = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.9"
