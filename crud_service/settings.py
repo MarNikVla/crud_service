@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'companies.apps.CompaniesConfig',
     'debug_toolbar',
     'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -170,6 +171,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
+    'PAGE_SIZE': 50,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+# For drf_spectacular
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'crud-service API',
+    'DESCRIPTION': 'test',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+}
