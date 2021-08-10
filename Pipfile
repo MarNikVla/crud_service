@@ -11,6 +11,8 @@ python-dotenv = "*"
 django-debug-toolbar = "*"
 pillow = "*"
 social-auth-app-django = "*"
+djangorestframework = "*"
+drf-spectacular = "*"
 
 [requires]
 python_version = "3.9"

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'companies.apps.CompaniesConfig',
     'debug_toolbar',
+    'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -160,3 +162,23 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# For drf_spectacular
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'crud-service API',
+    'DESCRIPTION': 'test',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+}
