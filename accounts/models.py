@@ -18,7 +18,7 @@ class Profile(models.Model):
     middle_name = models.CharField('Отчество', max_length=50, blank=True)
     bio = models.TextField('Информация о себе', max_length=500, blank=True)
     birth_date = models.DateField('Дата рождения: YYYY-mm-dd', null=True, blank=True)
-    avatar = models.ImageField('Аватар', upload_to='users/%Y/%m/%d/', blank=True)
+    avatar = models.ImageField('Аватар', upload_to='users/%Y/%m/%d/', null=True, blank=True)
     company = models.ForeignKey(Company,
                                 related_name='employee',
                                 on_delete=models.SET(get_stab_company_id))

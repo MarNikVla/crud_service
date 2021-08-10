@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,9 +48,10 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'companies.apps.CompaniesConfig',
     'debug_toolbar',
+    'djoser',
     'rest_framework',
     'drf_spectacular',
-    'djoser',
+
 	#JWT authentication backend library
     'rest_framework_simplejwt',
 ]
@@ -174,6 +176,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
@@ -187,4 +191,10 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'test',
     'VERSION': '1.0.0',
     # OTHER SETTINGS
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=360),
 }
